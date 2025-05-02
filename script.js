@@ -29,7 +29,7 @@ class Workout {
 class Running extends Workout {
   type = 'running';
 
-  constructor(coords, distance, duration, cadence) {
+  structor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
@@ -46,7 +46,7 @@ class Running extends Workout {
 class Cycling extends Workout {
   type = 'cycling';
 
-  constructor(coords, distance, duration, elevationGain) {
+  structor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
     this.calcSpeed();
@@ -61,23 +61,23 @@ class Cycling extends Workout {
 
 ///////////////////////////////////////
 // APPLICATION ARCHITECTURE
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
-const formButtons = document.querySelectorAll('.form__buttons');
-const edit = document.querySelector('.edit-btn');
-const deleteWork = document.querySelector('.delete-btn');
-const deleteAll = document.querySelector('.delete-all-btn');
-const cancel = document.querySelector('.cancel-btn');
-const sort = document.querySelector('.sort-btn');
-const srtButtons = document.querySelectorAll('.srt');
-const drawLines = document.querySelector('.draw-lines');
-const saveButton = document.querySelector('.save');
-const step1 = document.querySelector('.step1');
+st form = document.querySelector('.form');
+st tainerWorkouts = document.querySelector('.workouts');
+st inputType = document.querySelector('.form__input--type');
+st inputDistance = document.querySelector('.form__input--distance');
+st inputDuration = document.querySelector('.form__input--duration');
+st inputCadence = document.querySelector('.form__input--cadence');
+st inputElevation = document.querySelector('.form__input--elevation');
+st formButtons = document.querySelectorAll('.form__buttons');
+st edit = document.querySelector('.edit-btn');
+st deleteWork = document.querySelector('.delete-btn');
+st deleteAll = document.querySelector('.delete-all-btn');
+st cancel = document.querySelector('.cancel-btn');
+st sort = document.querySelector('.sort-btn');
+st srtButtons = document.querySelectorAll('.srt');
+st drawLines = document.querySelector('.draw-lines');
+st saveButton = document.querySelector('.save');
+st step1 = document.querySelector('.step1');
 
 class App {
   #map;
@@ -88,7 +88,7 @@ class App {
   #sortAscending = true;
   #activeWorkoutId;
 
-  constructor() {
+  structor() {
     // Get user's position
     this._getPosition();
 
@@ -98,7 +98,7 @@ class App {
     // Attach event handlers
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
-    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+    tainerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
 
     // hide the buttons
     formButtons.forEach(btn => (btn.style.display = 'none'));
@@ -115,16 +115,16 @@ class App {
   }
 
   _loadMap(position) {
-    const { latitude } = position.coords;
-    const { longitude } = position.coords;
+    st { latitude } = position.coords;
+    st { longitude } = position.coords;
 
-    const coords = [latitude, longitude];
+    st coords = [latitude, longitude];
 
     this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> tributors',
     }).addTo(this.#map);
 
     // Handling clicks on map
@@ -158,23 +158,23 @@ class App {
   _newWorkout(e) {
     if (!this.#mapEvent) return;
 
-    const validInputs = (...inputs) =>
+    st validInputs = (...inputs) =>
       inputs.every(inp => Number.isFinite(inp));
-    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+    st allPositive = (...inputs) => inputs.every(inp => inp > 0);
 
     e.preventDefault();
 
     // Get data from form
 
-    const type = inputType.value;
-    const distance = +inputDistance.value;
-    const duration = +inputDuration.value;
-    const { lat, lng } = this.#mapEvent.latlng;
+    st type = inputType.value;
+    st distance = +inputDistance.value;
+    st duration = +inputDuration.value;
+    st { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
     // If workout running, create running object
     if (type === 'running') {
-      const cadence = +inputCadence.value;
+      st cadence = +inputCadence.value;
       // Check if data is valid
       if (
         !validInputs(distance, duration, cadence) ||
@@ -187,7 +187,7 @@ class App {
 
     // If workout cycling, create cycling object
     if (type === 'cycling') {
-      const elevation = +inputElevation.value;
+      st elevation = +inputElevation.value;
       // Check if data is valid
       if (
         !validInputs(distance, duration, elevation) ||
@@ -214,13 +214,13 @@ class App {
     this._setLocalStorage();
 
     // Add or hide a message
-    console.log(this.#workouts);
+    sole.log(this.#workouts);
     if (this.#workouts.length > 0) {
       step1.style.display = 'none';
     }
     if (this.#workouts.length === 1) {
       setTimeout(() => {
-        console.log('2 sec passed');
+        sole.log('2 sec passed');
         step1.style.display = 'flex';
         step1.textContent =
           'You Can Also Choose Each Workout For Additional Functionality! 🏃🏻‍♂️🚴';
@@ -357,7 +357,6 @@ class App {
     });
 
     // Check if any workout exists
-    console.log(this.#workouts);
     if (this.#workouts.length > 0) {
       step1.style.display = 'none';
     }
@@ -449,10 +448,9 @@ class App {
     updatedWorkout.id = workout.id;
     updatedWorkout.date = workout.date;
 
-    console.log(updatedWorkout);
     // Add new object to workout array
     this.#workouts.push(updatedWorkout);
-    console.log(this.#workouts);
+    
     // Render workout on map as marker
     this._renderWorkoutMarker(updatedWorkout);
 
@@ -702,7 +700,6 @@ class App {
 
     // check if first marker has been rendered
     if (!workout) {
-      console.error('Workout not found.');
       return;
     }
 
@@ -718,7 +715,6 @@ class App {
 
       const { lat, lng } = e.latlng;
       workout.pathLines.push([lat, lng]);
-      console.log(workout.pathLines);
 
       if (polyline) {
         // Get the last point from the polyline
@@ -766,7 +762,6 @@ class App {
 
       this._savePath(workoutId);
 
-      // console.log('Initial workout coordinates:', workout.coords);
     });
     // Set the active workout id
     this.#activeWorkoutId = workoutId;
